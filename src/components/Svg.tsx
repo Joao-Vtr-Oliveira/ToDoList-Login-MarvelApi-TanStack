@@ -1,8 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from '@tanstack/react-query';
+import { Icon, IconProps } from '@chakra-ui/react';
 
+type types = {
+	type: 'home' | 'disconnect';
+};
 
-function Svg({ type, className }: {type: 'home' | 'disconnect', className?: string }) {
+const Svg: React.FC<types & IconProps> = ({ type, ...props }) =>{
   const queryClient = useQueryClient();
   const queryKey = {user: {name : ''}, sessionToken : ''}
 
@@ -27,16 +31,17 @@ function Svg({ type, className }: {type: 'home' | 'disconnect', className?: stri
     }
   }
   return (
-    <svg
-      className={`hover:fill-current cursor-pointer ${className}`}
-      xmlns="http://www.w3.org/2000/svg"
-      width="40"
-      height="40"
-      viewBox="0 0 24 24"
-      onClick={clickHandle}
-    >
-      <path d={path} />
-    </svg>
+		<Icon
+			cursor='pointer'
+			xmlns='http://www.w3.org/2000/svg'
+			width='10'
+			height='10'
+			viewBox='0 0 24 24'
+			onClick={clickHandle}
+			{...props}
+		>
+			<path d={path} />
+		</Icon>
   );
 }
 

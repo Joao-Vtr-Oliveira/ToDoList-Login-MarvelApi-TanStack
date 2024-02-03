@@ -64,28 +64,28 @@ const LoginPage = () => {
 		setPassword(e.target.value);
 
 	return (
-		<Flex align='center' justifyContent='center' height='full' width='full'>
-			<Card className='w-4/5 xl:w-2/5'>
-				<CardBody>
-					<Flex flexDirection='column' gap='10' padding='5'>
-						<Input
-							value={user}
-							placeholder='Usuário'
-							onChange={handleUserChange}
-						/>
-						<Input
-							value={password}
-							placeholder='Senha'
-							onChange={handlePasswordChange}
-							type='password'
-						/>
-						<Button onClick={handleLogin} isDisabled={!(!!user && !!password)}>
-							Login
-						</Button>
-					</Flex>
-				</CardBody>
-			</Card>
-		</Flex>
+    <Flex align="center" justifyContent="center" height="full" width="full">
+      <Card w={['80%', '80%', '80%', '80%', '40%']}>
+        <CardBody>
+          <Flex flexDirection="column" gap="10" padding="5">
+            <Input
+              value={user}
+              placeholder="Usuário"
+              onChange={handleUserChange}
+            />
+            <Input
+              value={password}
+              placeholder="Senha"
+              onChange={handlePasswordChange}
+              type="password"
+            />
+            <Button onClick={handleLogin} isDisabled={!(!!user && !!password)}>
+              Login
+            </Button>
+          </Flex>
+        </CardBody>
+      </Card>
+    </Flex>
 	);
 };
 

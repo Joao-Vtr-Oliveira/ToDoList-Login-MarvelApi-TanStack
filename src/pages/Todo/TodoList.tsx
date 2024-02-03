@@ -1,87 +1,88 @@
-import React, { useState } from "react";
-import TodoItem from "./TodoItem";
-import { TodoType } from "../../types/TodoType";
-import SessionCheckHOC from "../../requests/SessionCheckHOC";
+import React, { useState } from 'react';
+import TodoItem from './TodoItem';
+import { TodoType } from '../../types/TodoType';
+import SessionCheckHOC from '../../requests/SessionCheckHOC';
 import {
-  Button,
-  Card,
-  CardBody,
-  CardHeader,
-  Flex,
-  Heading,
-  Input,
-} from "@chakra-ui/react";
+  Box,
+	Button,
+	Card,
+	CardBody,
+	CardHeader,
+	Flex,
+	Heading,
+	Input,
+} from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { RequestReturn } from '../../types/RequestReturn';
 
 const TodoList: React.FC = () => {
+	const queryClient = useQueryClient();
+	const queryKey = ['login'];
+	const cachedLoginData = queryClient.getQueryData(queryKey) as RequestReturn;
 
-  const queryClient = useQueryClient();
-  const queryKey = ['login']
-  const cachedLoginData = queryClient.getQueryData(queryKey) as RequestReturn;
+	const [todos, setTodos] = useState<TodoType[]>([]);
+	const [inputValue, setInputValue] = useState('');
 
-  const [todos, setTodos] = useState<TodoType[]>([]);
-  const [inputValue, setInputValue] = useState("");
+	const addTodo = (text: string) => {
+		const newTodo: TodoType = { id: todos.length, text };
+		setTodos([...todos, newTodo]);
+	};
 
-  const addTodo = (text: string) => {
-    const newTodo: TodoType = { id: todos.length, text };
-    setTodos([...todos, newTodo]);
-  };
+	const removeTodo = (id: number) => {
+		setTodos(todos.filter((todo) => todo.id !== id));
+	};
 
-  const removeTodo = (id: number) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
-  };
+	const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === 'Enter' && inputValue) {
+			addTodo(inputValue);
+			setInputValue('');
+		}
+	};
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && inputValue) {
-      addTodo(inputValue);
-      setInputValue("");
-    }
-  };
+	const handleAddClick = () => {
+		if (inputValue) {
+			addTodo(inputValue);
+			setInputValue('');
+		}
+	};
 
-  const handleAddClick = () => {
-    if (inputValue) {
-      addTodo(inputValue);
-      setInputValue("");
-    }
-  };
+	const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setInputValue(e.target.value);
+	};
 
-  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-  };
-
-  return (
-    <Flex align="center" justifyContent="center" height="full" width="full">
-      <Card className="w-4/5 xl:w-2/5">
-        <CardHeader textAlign="center">
-          <Heading>Olá {cachedLoginData?.user.name || "!"}</Heading>
-        </CardHeader>
-        <CardBody textAlign="center">
-          <Input
-            value={inputValue}
-            onChange={handleOnChange}
-            placeholder="Digite a tarefa"
-            onKeyDown={handleKeyPress}
-            className="mb-5"
-            color="black"
-          />
+	return (
+		<Flex align='center' justifyContent='center' height='full' width='full'>
+			<Card w={['80%', '80%', '80%', '80%', '40%']}>
+				<CardHeader textAlign='center'>
+					<Heading>Olá {cachedLoginData?.user.name || '!'}</Heading>
+				</CardHeader>
+				<CardBody textAlign='center'>
+					<Input
+						value={inputValue}
+						onChange={handleOnChange}
+						placeholder='Digite a tarefa'
+						onKeyDown={handleKeyPress}
+						mb='1.25rem'
+						color='black'
+					/>
           <Button
             onClick={handleAddClick}
-            className={"mb-10 w-2/4"}
+            mb='2.25rem'
+            w='50%'
             isDisabled={!!!inputValue}
           >
-            Adicionar
-          </Button>
+						Adicionar
+					</Button>
           {todos.map((todo) => (
-            <div key={todo.id} className="flex p-1 w-full">
+            <Box key={todo.id} display='flex' p='0.25rem' w='100%'>
               <TodoItem key={todo.id} todo={todo} />
               <Button onClick={() => removeTodo(todo.id)}>Apagar</Button>
-            </div>
+            </Box>
           ))}
-        </CardBody>
-      </Card>
-    </Flex>
-  );
+				</CardBody>
+			</Card>
+		</Flex>
+	);
 };
 
 export default SessionCheckHOC(TodoList);

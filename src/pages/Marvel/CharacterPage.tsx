@@ -11,6 +11,7 @@ import {
 	CardHeader,
 	Flex,
 	Heading,
+	Image,
 	Text,
 } from '@chakra-ui/react';
 import { useParams } from 'react-router-dom';
@@ -119,12 +120,18 @@ function CharacterPage() {
 				height={{ base: '100vh', md: '90vh' }}
 				overflowY='auto'
 			>
-				<CardHeader className='flex flex-col items-center justify-center'>
+				<CardHeader
+					display='flex'
+					flexDirection='column'
+					alignItems='center'
+					justifyContent='center'
+				>
 					<Heading>{character.data?.data.results[0].name}</Heading>
 				</CardHeader>
 				<CardBody borderRadius={6} className='flex flex-col items-center'>
-					<img
-						className='rounded w-4/5 xl:w-2/5'
+					<Image
+						borderRadius='0.25rem'
+            w={['80%', '80%', '80%', '80%', '40%']}
 						src={`${character.data?.data.results[0].thumbnail.path}/portrait_fantastic.${character.data?.data.results[0].thumbnail.extension}`}
 						alt={character.data?.data.results[0].name}
 					/>
@@ -134,11 +141,13 @@ function CharacterPage() {
 							: ''}
 					</Text>
 				</CardBody>
-				<CardFooter
-					bg='black'
-					textColor='white'
-					className='flex items-center justify-center'
-				>
+        <CardFooter
+          bg="black"
+          textColor="white"
+          display='flex'
+          alignItems='center'
+          justifyContent='center'
+        >
 					<Accordions />
 				</CardFooter>
 			</Card>
